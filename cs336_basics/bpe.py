@@ -1,8 +1,68 @@
 import regex
 from collections import Counter
 import re
+import os
+from typing import BinaryIO
+from pathlib import Path
+from multiprocessing import Pool
+
+ROOT = Path("/Users/yangyuning/assignment1-basics")
+
+
+
+
+# input_path = ROOT / "data" / "TinyStoriesV2-GPT4-train.txt"
+
 
 PAT = r"""'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+"""
+def find_chunk_boundaries(
+    file: BinaryIO,
+    desired_num_chunks: int,
+    split_special_token: bytes,
+) -> list[int]:
+    """
+    Chunk the file into parts that can be counted independently.
+    May return fewer chunks if the boundaries end up overlapping.
+    """
+    # assert isinstance(split_special_token, bytes), "Must represent special token as a bytestring"
+
+    # Get total file size in bytes
+    file.seek(0, os.SEEK_END)
+    file_size = file.tell()
+    file.seek(0)
+
+    chunk_size = file_size // desired_num_chunks
+
+    # Initial guesses for chunk boundary locations, uniformly spaced
+    # Chunks start on previous index, don't include last index
+    chunk_boundaries = [i * chunk_size for i in range(desired_num_chunks + 1)]
+    chunk_boundaries[-1] = file_size
+
+    mini_chunk_size = 4096  # Read ahead by 4k bytes at a time
+
+    for bi in range(1, len(chunk_boundaries) - 1):
+        initial_position = chunk_boundaries[bi]
+        file.seek(initial_position)  # Start at boundary guess
+        while True:
+            mini_chunk = file.read(mini_chunk_size)  # Read a mini chunk
+
+            # If EOF, this boundary should be at the end of the file
+            if mini_chunk == b"":
+                chunk_boundaries[bi] = file_size
+                break
+
+            # Find the special token in the mini chunk
+            found_at = mini_chunk.find(split_special_token)
+            if found_at != -1:
+                chunk_boundaries[bi] = initial_position + found_at
+                break
+            initial_position += mini_chunk_size
+
+    # Make sure all boundaries are unique, but might be fewer than desired_num_chunks
+    return sorted(set(chunk_boundaries))
+
+
+
 
 def initilization_vocab(special_tokens):
     '''
@@ -21,35 +81,58 @@ def initilization_vocab(special_tokens):
         vocab[i] = special_tokens[i - 256].encode('utf-8')
     return vocab,256 + len(special_tokens)
 
-def initilization_pre_token(input_path,special_tokens):
+
+def pre_tokenize(chunk,special_tokens):
+    pattern = "("
+    N = len(special_tokens)
+    if N != 0:
+        special_tokens.sort(key=lambda x: len(x), reverse=True)
+        for i in range(N):
+            pattern += re.escape(special_tokens[i])
+            if i != N - 1:
+                pattern += "|"
+        pattern += ")"
+
+        chunks = re.split(pattern, chunk)
+    else:
+        chunks = [chunk]
+
     pre_token = Counter()
     word_id = dict()
 
-    with open(input_path, "r", encoding= 'utf-8') as f:
-        text = f.read()
-        pattern = "("
-        N = len(special_tokens)
-        if N != 0:
-            special_tokens.sort(key = lambda x: len(x), reverse = True)
-            for i in range(N):
-                pattern += re.escape(special_tokens[i])
-                if i != N - 1:
-                    pattern += "|"
-            pattern += ")"
+    for i in chunks:
+        if i not in special_tokens:
+            match = regex.finditer(PAT, i)
 
-            chunks = re.split(pattern, text)
-        else:
-            chunks = [text]
+            for ele in match:
+                match_token = ele.group().encode('utf-8')
+                pre_token[match_token] += 1
+                if match_token not in word_id:
+                    word_id[match_token] = list(match_token)
+    return pre_token,word_id
 
-        for chunk in chunks:
-            if chunk not in special_tokens:
-                match = regex.finditer(PAT, chunk)
+def initilization_pre_token(input_path,special_tokens):
 
-                for ele in match:
-                    pre_token.update([ele.group().encode('utf-8')])
-                    if ele.group().encode('utf-8') not in word_id:
-                        word_id[ele.group().encode('utf-8')] = list(ele.group().encode('utf-8'))
-    return pre_token, word_id
+    total_word_id = dict()
+    total = Counter()
+    num_processes = 4
+    chunks = []
+    with open(input_path, "rb") as f:
+
+        boundaries = find_chunk_boundaries(f, num_processes, b"<|endoftext|>")
+
+        for start, end in zip(boundaries[:-1], boundaries[1:]):
+            f.seek(start)
+            chunks.append(f.read(end - start).decode("utf-8", errors="ignore"))
+
+
+    with Pool(num_processes) as pool:
+        result= pool.starmap(pre_tokenize, [(chunk,special_tokens) for chunk in chunks])
+        for pre_token,word_id in result:
+            total += pre_token
+            total_word_id.update(word_id)
+
+    return total, total_word_id
 
 
 def initialization_pair_frequency(pre_token):
@@ -82,11 +165,7 @@ def apply_merge(pair_id,pair_enc,repr_num,pair_frequency,pre_token,word_id):
             put = 0
             while index < len_k:
                 if index < len_k - 1 and tuple(word_id[k][index:index + 2]) == pair_id:
-
-
-
                     if index >= 1:
-
                         pair_frequency[(word_id[k][put - 1],word_id[k][index])] -= v
                         pair_frequency[(word_id[k][put - 1], repr_num)] += v
                     if index < len_k - 2:
@@ -122,6 +201,10 @@ def train_bpe(input_path,vocab_size,special_tokens):
         repr_num += 1
 
     return vocab, merge
+
+
+
+
 
 
 

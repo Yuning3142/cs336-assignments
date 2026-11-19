@@ -1,6 +1,6 @@
 import re
 
-from .bpe import PAT
+from cs336_basics.bpe import PAT
 import regex
 import pickle
 
@@ -24,11 +24,9 @@ def chunk_token(special_tokens, text):
 class Tokenizer:
     def __init__(self,vocab,merges,special_tokens):
         self.vocab = vocab
-        self.merges = merges
         self.special_tokens = special_tokens if special_tokens is not None else []
-        self.byte_vocab = {}
-        for k,v in self.vocab.items():
-            self.byte_vocab[v] = k
+        self.byte_vocab = {v: k for k, v in self.vocab.items()}
+        self.merge_match = {pair: i for i, pair in enumerate(merges)}
 
 
 
@@ -50,45 +48,56 @@ class Tokenizer:
         for i in iterable:
             yield from self.encode(i)
 
-    def encode(self,text):
+    def encode(self, text):
         chunks = chunk_token(self.special_tokens, text)
 
         result = []
+
         for chunk in chunks:
             if chunk not in self.special_tokens:
-                matchs = regex.finditer(PAT,chunk)
+                matchs = regex.finditer(PAT, chunk)
 
                 for match in matchs:
-                    token_now = match.group().encode('utf-8')
-                    token_now_id = []
-                    for i in token_now:
-                        token_now_id.append(self.byte_vocab[bytes([i])])
-                    for a,b in self.merges:
-                        merge = a + b
-                        if merge in token_now:
-                            now = 0
-                            index = 0
-                            len_token  = len(token_now_id)
-                            while index < len_token:
-                                if index < len_token - 1:
-                                    temp_token = self.vocab[token_now_id[index]] + self.vocab[token_now_id[index + 1]]
+                    token_now = match.group().encode("utf-8")
 
-                                    if temp_token == merge:
-                                        token_now_id[now] = self.byte_vocab[temp_token]
-                                        now += 1
-                                        index += 2
-                                        continue
+                    token_now_id = [
+                        self.byte_vocab[bytes([i])]
+                        for i in token_now
+                    ]
 
-                                token_now_id[now] = self.byte_vocab[self.vocab[token_now_id[index]]]
-                                now += 1
-                                index += 1
+                    while True:
+                        pairs = [
+                            (
+                                self.vocab[token_now_id[i]],
+                                self.vocab[token_now_id[i + 1]]
+                            )
+                            for i in range(len(token_now_id) - 1)
+                        ]
 
-                            token_now_id = token_now_id[:now]
-                        else:
-                            continue
+                        rank = float("inf")
+                        index = -1
+
+                        for i in range(len(pairs)):
+                            if pairs[i] in self.merge_match:
+                                if self.merge_match[pairs[i]] < rank:
+                                    rank = self.merge_match[pairs[i]]
+                                    index = i
+
+                        if index == -1:
+                            break
+
+                        merge_pair = pairs[index][0] + pairs[index][1]
+
+                        token_now_id[index] = self.byte_vocab[merge_pair]
+                        del token_now_id[index + 1]
+
                     result += token_now_id
+
             else:
-                result.append(self.byte_vocab[chunk.encode('utf-8')])
+                result.append(
+                    self.byte_vocab[chunk.encode("utf-8")]
+                )
+
         return result
 
 
@@ -123,7 +132,9 @@ class Tokenizer:
 # tokenizer = Tokenizer(vocab, merges, special_tokens)
 # text = "hello world"
 # ids = tokenizer.encode(text)
+# print(ids)
 # assert tokenizer.decode(ids) == text
+#
 #
 # texts = [
 #     "hello world",
@@ -140,4 +151,4 @@ class Tokenizer:
 #
 # print(expected)
 # print(result == expected)
-
+#
