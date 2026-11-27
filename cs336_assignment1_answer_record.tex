@@ -364,9 +364,84 @@ The first update multiplies $W_0$ by $0.8$, $-1$, or $-19$ for $\eta=10$, $100$,
 \vspace{0.05in}
 \noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q22_adamw_accounting_2.png}\par
 \vspace{0.05in}
-\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
-\emph{Pending.}\par
-\end{minipage}\par
+\newpage
+\noindent\textbf{Answer record --- AdamW accounting}\par
+\begingroup\small
+\textbf{(a) FP32 peak memory.} For this part, use the problem's assumption
+$F=d_{\mathrm{ff}}=(8/3)D$ (rather than the rounded $F=4{,}288$ used in
+\texttt{transformer\_accounting}). Let $P$ denote trainable parameters and
+$A$ the counted activation elements. The user-supplied accounting is
+\[
+\begin{aligned}
+P &= 2VD+L(4D^2+3DF+2D)+D,\\
+A &= B\left[L(8TD+2HT^2+4TF)+TD+2TV\right].
+\end{aligned}
+\]
+The activation count follows the exercise's simplified scope: eight
+$BTD$ outputs, two $BHT^2$ attention tensors and four $BTF$ feed-forward
+outputs per block, then final RMSNorm ($BTD$), logits ($BTV$), and one
+cross-entropy intermediate ($BTV$). It omits a separate input-embedding
+activation. FP32 weights, gradients, and two AdamW moment tensors each
+require $4P$ bytes, so the estimate is
+\[
+M=16P+4A.
+\]
+For $V=50{,}257$, $T=1{,}024$, $L=48$, $D=1{,}600$, $H=25$, and
+$F=(8/3)D$, the supplied results are
+\[
+P=1{,}635{,}537{,}600,\qquad
+M\approx(26.169+16.357B)\ \mathrm{GB}.
+\]
+Thus $B=1$ requires about $42.53$ GB. These figures are decimal GB and
+are estimates under the exercise's activation assumptions, rather than
+an exact PyTorch peak-memory measurement.\par
+\medskip
+\textbf{(b) Largest batch in 80 GB.} Applying the same model and
+memory estimate gives
+\[
+26.169+16.357B\leq80,
+\qquad B\leq3.291,
+\qquad \boxed{B_{\max}=3}.
+\]
+The estimates for $B=1,2,3,4$ are $42.53$, $58.88$, $75.24$, and
+$91.59$ GB, respectively.\par
+\medskip
+\noindent\textbf{(c) AdamW optimizer arithmetic.} The supplied
+per-parameter estimate is approximately $14$ FLOPs for an AdamW update.
+For the $F=4{,}288$ GPT-2 XL-sized configuration, where
+$P=1{,}640{,}452{,}800$,
+\[
+C_{\mathrm{AdamW}}\approx14P
+=22{,}966{,}339{,}200\ \text{FLOPs}.
+\]
+\textbf{(d) Training-time estimate.} For this part use the rounded
+$F=4{,}288$, effective batch size $B=1{,}024$, $N=400{,}000$ steps,
+and the forward matrix-multiplication count from
+\texttt{transformer\_accounting}:
+\[
+\begin{aligned}
+C_f &= B\left[L(8TD^2+4T^2D+6TDF)+2TDV\right]\\
+&=3.6011723718656\times10^{15}\ \text{FLOPs per batch},\\
+C_{\mathrm{step}}&\approx C_f+2C_f+14P
+=1.0803540081936\times10^{16}\ \text{FLOPs}.
+\end{aligned}
+\]
+With the stipulated H100 TF32 peak of $495\times10^{12}$ FLOP/s and
+50\% model FLOPs utilization, the effective rate is
+$247.5\times10^{12}$ FLOP/s. Hence
+\[
+\begin{aligned}
+t&=\frac{N C_{\mathrm{step}}}{0.5(495\times10^{12})}\\
+&\approx 1.746\times10^{7}\ \mathrm{s}
+\approx\boxed{4{,}850.07\ \mathrm{hours}}
+\approx202\ \mathrm{days}.
+\end{aligned}
+\]
+This is a theoretical single-GPU compute estimate. A batch of 1,024
+does not fit into the simple FP32 memory estimate for one H100; it
+would require accumulation or another memory strategy. The total
+training-token count is $NBT=419{,}430{,}400{,}000$.\par
+\endgroup
 \vspace{0.13in}\hrule\vspace{0.20in}
 % Problem (learning_rate_schedule)
 \noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q23_learning_rate_schedule_1.png}\par
