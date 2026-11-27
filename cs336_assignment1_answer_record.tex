@@ -1,0 +1,497 @@
+% Edit answer blocks below; question images in output/pdf/question_crops contain only problem statements.
+\documentclass[10pt,letterpaper]{article}
+\usepackage[margin=0.60in]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\setmonofont{Menlo}
+\newfontfamily\zhfont{Arial Unicode MS}
+\usepackage{upquote}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.35em}
+\pagestyle{plain}
+\begin{document}
+{\LARGE\bfseries CS336 Assignment 1: Questions and Answer Record}\par
+\smallskip
+{Original problem statements are cropped from the course PDF; responses below are only those you supplied.}\par
+\bigskip
+% Problem (unicode1)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q01_unicode1_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q01_unicode1_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\textbf{(a)} \texttt{chr(0)} returns the Unicode NUL character, U+0000.\par
+\vspace{0.24in}
+\textbf{(b)} \texttt{repr} shows the NUL character using the escape sequence \texttt{\textbackslash{}x00}, while \texttt{print} outputs the actual invisible NUL character.\par
+\vspace{0.32in}
+\textbf{(c)}\par\vskip 0.10in
+\begin{verbatim}
+print("this is a test" + chr(0) + "string")
+this is a teststring
+"this is a test" + chr(0) + "string"
+'this is a test\x00string'
+\end{verbatim}
+\vskip 0.10in
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (unicode2)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q02_unicode2_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q02_unicode2_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\textbf{(a) Encoding observations}\par\vskip 0.08in
+{\scriptsize
+\begin{verbatim}
+>>> "hello".encode("utf-8")
+b'hello'
+>>> "hello".encode("utf-16")
+b'\xff\xfeh\x00e\x00l\x00l\x00o\x00'
+>>> "hello".encode("utf-32")
+b'\xff\xfe\x00\x00h\x00\x00\x00e\x00\x00\x00l\x00\x00\x00l\x00\x00\x00o\x00\x00\x00'
+\end{verbatim}
+}
+\vskip 0.08in
+{\footnotesize
+\noindent\texttt{>>> "}{\zhfont 你好}\texttt{".encode("utf-8")}\par
+\noindent\verb|b'\xe4\xbd\xa0\xe5\xa5\xbd'|\par
+\noindent\texttt{>>> "}{\zhfont 你好}\texttt{".encode("utf-16")}\par
+\noindent\verb|b'\xff\xfe`O}Y'|\par
+\noindent\texttt{>>> "}{\zhfont 你好}\texttt{".encode("utf-32")}\par
+\noindent\verb|b'\xff\xfe\x00\x00`O\x00\x00}Y\x00\x00'|\par
+}
+\vskip 0.16in
+\textbf{(b)} The function is incorrect because UTF-8 characters can span multiple bytes; decoding each byte independently fails for non-ASCII characters such as \texttt{"}{\zhfont 你}\texttt{"}.\par
+\vskip 0.10in
+\textbf{(c)} \verb|b'\xe4\xbd'| is not a valid UTF-8 encoding because \verb|0xe4| starts a three-byte sequence, but the third continuation byte is missing.\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (train_bpe)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q03_train_bpe_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (train_bpe_tinystories)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q04_train_bpe_tinystories_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q04_train_bpe_tinystories_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (train_bpe_expts_owt)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q05_train_bpe_expts_owt_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (tokenizer)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q06_tokenizer_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q06_tokenizer_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (tokenizer_experiments)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q07_tokenizer_experiments_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q07_tokenizer_experiments_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\textbf{(a)} TinyStories tokenizer (10k vocab). TinyStories validation: mean compression ratio $\approx 4.057$ bytes/token.\par
+\textbf{(c) Preliminary:} The first 10-document run (10,778 bytes, about 3.839 s of encode time) measured approximately 2,807.45 bytes/s. A later optimized run reported about 1.7 MB/s, but its timing included NumPy array creation; final encode-only throughput and the 825 GB estimate await remeasurement.\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (linear)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q08_linear_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (embedding)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q09_embedding_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q09_embedding_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (rmsnorm)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q10_rmsnorm_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (positionwise_feedforward)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q11_positionwise_feedforward_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (rope)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q12_rope_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (softmax)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q13_softmax_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (scaled_dot_product_attention)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q14_scaled_dot_product_attention_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q14_scaled_dot_product_attention_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (multihead_self_attention)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q15_multihead_self_attention_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q15_multihead_self_attention_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (transformer_block)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q16_transformer_block_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (transformer_lm)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q17_transformer_lm_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q17_transformer_lm_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (transformer_accounting)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q18_transformer_accounting_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q18_transformer_accounting_2.png}\par
+\vspace{0.05in}
+\noindent\textbf{Answer record --- (a)}\par
+\begingroup\small
+For the assignment architecture, use $V=50{,}257$, $T=1{,}024$, $L=48$, $D=1{,}600$, $H=25$, and $F=d_{\mathrm{ff}}=4{,}288$; hence the head dimension is $D/H=64$. The context length and head count affect computation but do not add trainable parameters.\par
+\[
+\begin{array}{lrl}
+\text{Token embedding} & VD & =50{,}257(1{,}600)=80{,}411{,}200\\
+\text{Attention per block} & 4D^2 & =4(1{,}600)^2=10{,}240{,}000\\
+\text{SwiGLU per block} & 3DF & =3(1{,}600)(4{,}288)=20{,}582{,}400\\
+\text{Two RMSNorms per block} & 2D & =3{,}200\\
+\text{RoPE} & 0 & \text{trainable parameters}\\
+\text{Final RMSNorm} & D & =1{,}600\\
+\text{Untied LM head} & DV & =80{,}411{,}200
+\end{array}
+\]
+Thus one block has $4D^2+3DF+2D=30{,}825{,}600$ parameters, and all 48 blocks have $1{,}479{,}628{,}800$.\par
+\[
+P=2VD+L(4D^2+3DF+2D)+D
+=160{,}822{,}400+1{,}479{,}628{,}800+1{,}600
+=\boxed{1{,}640{,}452{,}800}.
+\]
+The parameter shares are SwiGLU $60.22\%$, attention $29.96\%$, token embedding $4.90\%$, LM head $4.90\%$, and RMSNorm $0.01\%$; the feed-forward network has the largest share.\par
+At four bytes per FP32 parameter, the weights occupy
+\[
+1{,}640{,}452{,}800\times4
+=\boxed{6{,}561{,}811{,}200\ \mathrm{bytes}}
+\approx\boxed{6.56\ \mathrm{GB}}
+\approx 6.11\ \mathrm{GiB}.
+\]
+\textbf{One-to-two sentence deliverable:} The model has $1{,}640{,}452{,}800$ trainable parameters. Loading only its FP32 weights requires $6{,}561{,}811{,}200$ bytes (about $6.56$ GB or $6.11$ GiB), excluding gradients, activations, optimizer states, and other buffers.\par
+
+\newpage
+\noindent\textbf{(b) Matrix-multiplication FLOPs for one forward pass}\par
+For a batch size of one, a $(m\times n)(n\times k)$ product costs $2mnk$ FLOPs. The following operations occur in each Transformer block at $T=1{,}024$:\par
+\begin{center}
+\begin{tabular}{lll}
+\hline
+Matrix multiplication & FLOPs & GFLOPs per block\\
+\hline
+Query $XW_Q$ & $2TD^2$ & 5.243\\
+Key $XW_K$ & $2TD^2$ & 5.243\\
+Value $XW_V$ & $2TD^2$ & 5.243\\
+Scores $QK^\top$ & $2T^2D$ & 3.355\\
+Attention output $AV$ & $2T^2D$ & 3.355\\
+Output projection $XW_O$ & $2TD^2$ & 5.243\\
+SwiGLU $W_1$ & $2TDF$ & 14.051\\
+SwiGLU $W_2$ & $2TDF$ & 14.051\\
+SwiGLU $W_3$ & $2TDF$ & 14.051\\
+\hline
+Per block & $8TD^2+4T^2D+6TDF$ & 69.835\\
+\hline
+\end{tabular}
+\end{center}
+The full model adds the LM-head product ($2TDV$), while embedding lookup, norms, RoPE, and activations are excluded from this matrix-multiplication count:\par
+\[
+C=L(8TD^2+4T^2D+6TDF)+2TDV
+=\boxed{3{,}516{,}769{,}894{,}400}\ \text{FLOPs}
+\approx 3.517\ \text{TFLOPs}.
+\]
+This counts dense $T\times T$ attention products, without halving them for the causal mask.\par
+\medskip\noindent\textbf{(c) Largest FLOPs contributors}\par
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Component & TFLOPs & Share\\
+\hline
+SwiGLU FFN & 2.023 & 57.53\%\\
+QKVO projections & 1.007 & 28.62\%\\
+Attention scores and weighted values & 0.322 & 9.16\%\\
+LM head & 0.165 & 4.68\%\\
+\hline
+\end{tabular}
+\end{center}
+\textbf{One-to-two sentence deliverable:} SwiGLU FFNs dominate the forward-pass matrix-multiplication FLOPs, contributing about $57.53\%$. QKVO projections contribute $28.62\%$, while the quadratic attention products contribute $9.16\%$ at $T=1{,}024$.\par
+\medskip\noindent\textbf{(d) GPT-2-sized model comparison}\par
+With $V=50{,}257$ and $T=1{,}024$ fixed, $F$ is the nearest multiple of 64 to $(8/3)D$:\par
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Model & Layers & $D$ & Heads & $F$\\
+\hline
+Small & 12 & 768 & 12 & 2,048\\
+Medium & 24 & 1,024 & 16 & 2,752\\
+Large & 36 & 1,280 & 20 & 3,392\\
+XL & 48 & 1,600 & 25 & 4,288\\
+\hline
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{lrrrrr}
+\hline
+Model & QKVO & Attention & FFN & LM head & Total TFLOPs\\
+\hline
+Small & 19.88\% & 13.25\% & 39.76\% & 27.10\% & 0.292\\
+Medium & 24.83\% & 12.42\% & 50.05\% & 12.70\% & 0.830\\
+Large & 27.32\% & 10.93\% & 54.30\% & 7.45\% & 1.769\\
+XL & 28.62\% & 9.16\% & 57.53\% & 4.68\% & 3.517\\
+\hline
+\end{tabular}
+\end{center}
+At fixed $T$ and $V$, with $F\approx(8/3)D$, QKVO and FFN costs scale as $O(LD^2)$, attention-product cost as $O(LD)$, and LM-head cost as $O(D)$. Thus the QKVO and FFN shares rise as model width and depth increase, while the attention and LM-head shares fall.\par
+\newpage
+\noindent\textbf{(e) Increasing the XL context length to 16,384}\par
+The QKVO, FFN, and LM-head terms are linear in $T$ and grow $16\times$; the attention-product term is quadratic in $T$ and grows $256\times$:\par
+\[
+C(T)=\underbrace{8LTD^2+6LTDF+2TDV}_{O(T)}
++\underbrace{4LT^2D}_{O(T^2)}.
+\]
+\[
+C(16{,}384)=\boxed{133{,}577{,}729{,}638{,}400}\ \text{FLOPs}
+\approx 133.578\ \text{TFLOPs},\qquad
+\frac{C(16{,}384)}{C(1{,}024)}\approx\boxed{37.98}.
+\]
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Component & $T=1{,}024$ & $T=16{,}384$\\
+\hline
+QKVO & 28.62\% & 12.06\%\\
+Attention scores and weighted values & 9.16\% & 61.73\%\\
+FFN & 57.53\% & 24.24\%\\
+LM head & 4.68\% & 1.97\%\\
+\hline
+\end{tabular}
+\end{center}
+\textbf{One-to-two sentence deliverable:} Increasing the context length from $1{,}024$ to $16{,}384$ raises the forward-pass FLOPs from about $3.517$ to $133.578$ TFLOPs, a factor of $37.98$. Attention products become dominant, rising from $9.16\%$ to $61.73\%$ because their cost is quadratic in sequence length.\par
+\medskip\noindent\textbf{Supplementary crossover points (XL).}\par
+Attention products alone exceed FFN FLOPs when $4T^2D>6TDF$, or $T>(3/2)F=6{,}432$. The full attention sublayer (QKVO plus attention products) exceeds FFN FLOPs when $8TD^2+4T^2D>6TDF$, or $T>(3/2)F-2D=3{,}232$.\par
+\endgroup
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (cross_entropy)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q19_cross_entropy_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (learning_rate_tuning)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q20_learning_rate_tuning_1.png}\par
+\vspace{0.05in}
+\noindent\textbf{Answer record}\par
+\begingroup\small
+\begin{center}
+\begin{tabular}{lrrl}
+\hline
+Learning rate & Initial loss & Final loss & Observed behavior\\
+\hline
+$10$ & 24.91 & 0.01225 & Steady convergence\\
+$100$ & 22.78 & $0$ & Faster convergence\\
+$1{,}000$ & 29.30 & \texttt{inf} & Divergence\\
+\hline
+\end{tabular}
+\end{center}
+For the toy objective $\mathcal L(W)=\frac{1}{100}\sum_{i,j}W_{ij}^{2}$ and the handout's learning-rate schedule, $\nabla_W\mathcal L=W/50$, so the update is
+\[
+W_{t+1}=\left(1-\frac{\eta}{50\sqrt{t+1}}\right)W_t.
+\]
+The first update multiplies $W_0$ by $0.8$, $-1$, or $-19$ for $\eta=10$, $100$, or $1{,}000$, respectively. For $\eta=100$, the fourth update has multiplier zero in exact arithmetic; for $\eta=1{,}000$, the first update multiplies loss by $19^2=361$, explaining the early growth and eventual observed overflow.\par
+\textbf{One-to-two sentence deliverable:} With a learning rate of $10$, the loss decreases steadily toward zero; with $100$, it converges much faster for this particular objective. With $1{,}000$, updates overshoot the minimum, the loss grows rapidly, and the observed value eventually becomes \texttt{inf}.\par
+\endgroup
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (adamw)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q21_adamw_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (adamw_accounting)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q22_adamw_accounting_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q22_adamw_accounting_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (learning_rate_schedule)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q23_learning_rate_schedule_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q23_learning_rate_schedule_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (gradient_clipping)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q24_gradient_clipping_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (data_loading)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q25_data_loading_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q25_data_loading_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (checkpointing)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q26_checkpointing_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (training_together)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q27_training_together_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q27_training_together_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (decoding)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q28_decoding_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (experiment_log)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q29_experiment_log_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q29_experiment_log_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (learning_rate)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q30_learning_rate_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q30_learning_rate_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (batch_size_experiment)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q31_batch_size_experiment_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (generate)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q32_generate_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (layer_norm_ablation)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q33_layer_norm_ablation_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (pre_norm_ablation)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q34_pre_norm_ablation_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (no_pos_emb)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q35_no_pos_emb_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (swiglu_ablation)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q36_swiglu_ablation_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q36_swiglu_ablation_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (main_experiment)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q37_main_experiment_1.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+% Problem (leaderboard)
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q38_leaderboard_1.png}\par
+\vspace{0.05in}
+\noindent\includegraphics[width=\linewidth]{output/pdf/question_crops/q38_leaderboard_2.png}\par
+\vspace{0.05in}
+\noindent\begin{minipage}{\linewidth}\textbf{Answer record}\par
+\emph{Pending.}\par
+\end{minipage}\par
+\vspace{0.13in}\hrule\vspace{0.20in}
+\end{document}
